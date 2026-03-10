@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", sans-serif;
+
+  /* Brand */
+  --color-primary: #3d5afe;
+  --color-primary-hover: #2a44e8;
+
+  /* Text */
+  --color-text-title: #1a1a1a;
+  --color-text-subtitle: #e0e0e0;
+  --color-text-hint: #6c6c6c;
+  --color-text-body: #232323;
+  --color-text-muted: #9c9c9c;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+}
+
+@utility bg-login-card {
+  background: linear-gradient(to bottom, #f3f4f6 0%, #ffffff 20%);
+}
+
+@utility shadow-login-card {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+}
+
+@utility bg-login-border {
+  background: linear-gradient(to bottom, #ededed 0%, transparent 90%);
+}
