@@ -1,7 +1,7 @@
 import { clsx } from "clsx";
 import { useState } from "react";
+
 import { AddProductModal } from "../../components/ui/AddProductModal";
-import type { Product } from "../../types";
 import { Pagination } from "../../components/ui/Pagination";
 import { TableCheckbox } from "../../components/ui/TableCheckbox";
 import {
@@ -11,59 +11,46 @@ import {
   IconRefresh,
   IconSearch,
 } from "../../components/ui/icons";
-import { useProducts } from "./useProducts";
-
-const LIMIT = 20;
+import { useProductsPage } from "./useProductsPage";
 
 export function ProductsPage() {
-  const [page, setPage] = useState(1);
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const [localProducts, setLocalProducts] = useState<Product[]>([]);
-  const { data, isLoading, isFetching, isError, refetch } = useProducts({
+  const {
+    searchInput,
+    handleSearchChange,
+    products,
+    data,
+    isLoading,
+    isFetching,
+    isError,
+    refetch,
+    handleAdd,
     page,
-    limit: LIMIT,
-  });
-
-  const allIds = data?.products.map((p) => p.id) ?? [];
-  const allChecked =
-    allIds.length > 0 && allIds.every((id) => selectedIds.includes(id));
-
-  function toggleAll(checked: boolean) {
-    setSelectedIds(checked ? allIds : []);
-  }
-
-  function toggleOne(id: number, checked: boolean) {
-    setSelectedIds((prev) =>
-      checked ? [...prev, id] : prev.filter((x) => x !== id),
-    );
-  }
-
-  function handleAdd(fields: Omit<Product, "id" | "description" | "category" | "thumbnail" | "rating">) {
-    setLocalProducts((prev) => [
-      { ...fields, id: Date.now(), description: "", category: "", thumbnail: "", rating: 0 },
-      ...prev,
-    ]);
-  }
-
-  const totalPages = data ? Math.ceil(data.total / LIMIT) : 0;
-  const from = (page - 1) * LIMIT + 1;
-  const to = data ? Math.min(page * LIMIT, data.total) : 0;
+    setPage,
+    totalPages,
+    from,
+    to,
+    selectedIds,
+    allChecked,
+    toggleAll,
+    toggleOne,
+  } = useProductsPage();
 
   return (
     <div className="min-h-screen bg-white">
       {/* Top header */}
-      <div className="flex items-center gap-6 px-8 py-5 border-b border-gray-200">
-        <h1 className="text-2xl font-semibold text-gray-900 shrink-0">
-          Товары
-        </h1>
-        <div className="flex flex-1 max-w-xl items-center gap-2 h-10 px-4 bg-gray-100 rounded-lg">
+      <div className="flex items-center px-7.5 py-5 border-x border-[#F3F3F3] border-20">
+        <h1 className="flex-1 text-2xl font-semibold text-gray-900">Товары</h1>
+        <div className="flex items-center gap-2 h-12 w-255.75 px-4 bg-[#F3F3F3] rounded-lg">
           <IconSearch />
           <input
             className="flex-1 bg-transparent text-sm text-gray-700 placeholder:text-gray-400 outline-none"
             placeholder="Найти"
+            value={searchInput}
+            onChange={handleSearchChange}
           />
         </div>
+        <div className="flex-1" />
       </div>
 
       <div className="px-7.5 py-10">
@@ -94,7 +81,7 @@ export function ProductsPage() {
 
         {/* Progress bar */}
         {(isLoading || isFetching) && (
-          <div className="fixed top-0 left-0 right-0 h-0.5 z-50 overflow-hidden">
+          <div className="fixed top-0 left-0 right-0 h-1 z-50 overflow-hidden">
             <div
               className="absolute inset-y-0 w-1/2 bg-primary"
               style={{ animation: "progress-slide 1.2s ease-in-out infinite" }}
@@ -133,7 +120,7 @@ export function ProductsPage() {
               </tr>
             </thead>
             <tbody>
-              {[...localProducts, ...(data?.products ?? [])].map((product) => {
+              {products.map((product) => {
                 const isLowRating = product.rating < 3;
                 const priceInt = Math.floor(product.price).toLocaleString(
                   "ru-RU",
@@ -188,7 +175,7 @@ export function ProductsPage() {
                     </td>
                     <td>
                       <div className="flex items-center gap-8 justify-end pr-29.5">
-                        <button className="w-[52px] h-[27px] rounded-full flex items-center justify-center text-white shrink-0 bg-[#242EDB] hover:opacity-90 transition-opacity">
+                        <button className="w-13 h-6.75 rounded-full flex items-center justify-center text-white shrink-0 bg-[#242EDB] hover:opacity-90 transition-opacity">
                           <IconPlus />
                         </button>
                         <button className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-600 border border-gray-200 transition-colors">

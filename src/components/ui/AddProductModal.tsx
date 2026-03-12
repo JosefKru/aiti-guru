@@ -1,17 +1,12 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useModalAnimation } from "../../hooks/useModalAnimation";
-import { validateProductForm } from "../../lib/validateProductForm";
+import { addProductSchema, type AddProductFormValues } from "../../features/products/schema";
 import type { Product } from "../../types";
 import { Button } from "./Button";
 import { Input } from "./Input";
 
-interface AddProductForm {
-  title: string;
-  price: string;
-  brand: string;
-  sku: string;
-}
+type AddProductForm = AddProductFormValues;
 
 interface AddProductModalProps {
   onClose: () => void;
@@ -34,12 +29,17 @@ export function AddProductModal({ onClose, onAdd }: AddProductModalProps) {
 
   function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault();
-    const formErrors = validateProductForm(form);
-    if (Object.keys(formErrors).length > 0) {
-      setErrors(formErrors);
+    const result = addProductSchema.safeParse(form);
+    if (!result.success) {
+      const fieldErrors: Partial<AddProductForm> = {};
+      for (const issue of result.error.issues) {
+        const field = issue.path[0] as keyof AddProductForm;
+        if (!fieldErrors[field]) fieldErrors[field] = issue.message;
+      }
+      setErrors(fieldErrors);
       return;
     }
-    onAdd({ title: form.title, price: Number(form.price), brand: form.brand, sku: form.sku });
+    onAdd({ title: result.data.title, price: Number(result.data.price), brand: result.data.brand, sku: result.data.sku });
     close();
     setTimeout(() => toast.success("Товар успешно добавлен"), 260);
   }
@@ -54,7 +54,7 @@ export function AddProductModal({ onClose, onAdd }: AddProductModalProps) {
       onClick={(e) => e.target === overlayRef.current && close()}
     >
       <div
-        className="bg-white rounded-2xl shadow-xl w-[480px] p-8 transition-all duration-250"
+        className="bg-white rounded-2xl shadow-xl w-120 p-8 transition-all duration-250"
         style={{
           opacity: visible ? 1 : 0,
           transform: visible ? "scale(1)" : "scale(0.97)",
