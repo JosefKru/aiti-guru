@@ -1,11 +1,30 @@
-import { clsx } from 'clsx'
-import type { IconProps } from './types'
+import { clsx } from "clsx";
+import type { IconProps } from "./types";
 
 export function IconSearch({ className }: IconProps) {
   return (
-    <svg className={clsx(className)} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="11" cy="11" r="8" />
-      <path d="m21 21-4.35-4.35" />
+    <svg
+      className={clsx(className)}
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z"
+        stroke="#999999"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M21 21L16.65 16.65"
+        stroke="#999999"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
     </svg>
-  )
+  );
 }
