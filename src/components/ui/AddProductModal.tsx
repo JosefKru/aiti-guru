@@ -1,0 +1,123 @@
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { useModalAnimation } from "../../hooks/useModalAnimation";
+import { validateProductForm } from "../../lib/validateProductForm";
+import type { Product } from "../../types";
+import { Button } from "./Button";
+import { Input } from "./Input";
+
+interface AddProductForm {
+  title: string;
+  price: string;
+  brand: string;
+  sku: string;
+}
+
+interface AddProductModalProps {
+  onClose: () => void;
+  onAdd: (product: Omit<Product, "id" | "description" | "category" | "thumbnail" | "rating">) => void;
+}
+
+const EMPTY: AddProductForm = { title: "", price: "", brand: "", sku: "" };
+
+export function AddProductModal({ onClose, onAdd }: AddProductModalProps) {
+  const [form, setForm] = useState<AddProductForm>(EMPTY);
+  const [errors, setErrors] = useState<Partial<AddProductForm>>({});
+  const { visible, close, overlayRef } = useModalAnimation(onClose);
+
+  function set(field: keyof AddProductForm) {
+    return (e: React.ChangeEvent<HTMLInputElement>) => {
+      setForm((prev) => ({ ...prev, [field]: e.target.value }));
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
+    };
+  }
+
+  function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formErrors = validateProductForm(form);
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors);
+      return;
+    }
+    onAdd({ title: form.title, price: Number(form.price), brand: form.brand, sku: form.sku });
+    close();
+    setTimeout(() => toast.success("Товар успешно добавлен"), 260);
+  }
+
+  return (
+    <div
+      ref={overlayRef}
+      className="fixed inset-0 z-40 flex items-center justify-center transition-all duration-250"
+      style={{
+        backgroundColor: visible ? "rgba(0,0,0,0.35)" : "rgba(0,0,0,0)",
+      }}
+      onClick={(e) => e.target === overlayRef.current && close()}
+    >
+      <div
+        className="bg-white rounded-2xl shadow-xl w-[480px] p-8 transition-all duration-250"
+        style={{
+          opacity: visible ? 1 : 0,
+          transform: visible ? "scale(1)" : "scale(0.97)",
+        }}
+      >
+        <div className="flex items-center justify-between mb-7">
+          <h2 className="text-[20px] font-bold text-gray-900">Добавить товар</h2>
+          <button
+            type="button"
+            onClick={close}
+            className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+          >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+            </svg>
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <Input
+            label="Наименование"
+            placeholder="Введите наименование"
+            value={form.title}
+            onChange={set("title")}
+            error={errors.title}
+          />
+          <Input
+            label="Цена, ₽"
+            placeholder="0.00"
+            value={form.price}
+            onChange={set("price")}
+            error={errors.price}
+            inputMode="decimal"
+          />
+          <Input
+            label="Вендор"
+            placeholder="Введите вендора"
+            value={form.brand}
+            onChange={set("brand")}
+            error={errors.brand}
+          />
+          <Input
+            label="Артикул"
+            placeholder="Введите артикул"
+            value={form.sku}
+            onChange={set("sku")}
+            error={errors.sku}
+          />
+
+          <div className="flex gap-3 mt-3">
+            <button
+              type="button"
+              onClick={close}
+              className="flex-1 h-13.5 rounded-xl border border-gray-200 text-[16px] font-semibold text-gray-600 hover:bg-gray-50 transition-colors"
+            >
+              Отмена
+            </button>
+            <Button type="submit" className="flex-1">
+              Добавить
+            </Button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}

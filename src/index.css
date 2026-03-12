@@ -30,3 +30,9 @@ body {
 @utility bg-login-border {
   background: linear-gradient(to bottom, #ededed 0%, transparent 90%);
 }
+
+@keyframes progress-slide {
+  0% { transform: translateX(-100%); }
+  60% { transform: translateX(20%); }
+  100% { transform: translateX(100%); }
+}

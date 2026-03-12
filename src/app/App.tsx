@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
 import { LoginPage } from '../features/auth/LoginPage'
 import { ProductsPage } from '../features/products/ProductsPage'
 import { ProtectedRoute } from './ProtectedRoute'
@@ -18,6 +19,7 @@ export default function App() {
         />
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
+      <Toaster position="top-center" />
     </BrowserRouter>
   )
 }
