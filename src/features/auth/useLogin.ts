@@ -14,8 +14,8 @@ interface LoginPayload {
 
 async function loginRequest(payload: LoginPayload): Promise<AuthResponse> {
   const { data } = await instance.post<AuthResponse>('/auth/login', {
-    username: payload.username,
-    password: payload.password,
+    username: payload.username.trim(),
+    password: payload.password.trim(),
     expiresInMins: payload.remember ? PERSISTENT_EXPIRES_MINS : SESSION_EXPIRES_MINS,
   })
   return data

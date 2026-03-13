@@ -22,7 +22,12 @@ export function LoginPage() {
   const apiError = error ? "Неверный логин или пароль" : null;
 
   return (
-    <div className="h-screen overflow-y-auto bg-gray-100 flex items-center justify-center py-8 px-4">
+    <div className="h-screen overflow-y-auto bg-gray-100 flex items-center justify-center py-8 px-4 relative">
+      <div className="absolute bottom-5 right-6 text-sm text-gray-500 bg-white/80 rounded-lg px-3 py-2 shadow-sm">
+        <span className="font-semibold text-gray-700">Тестовый вход:</span>{" "}
+        <span className="font-mono">emilys</span>{" / "}
+        <span className="font-mono">emilyspass</span>
+      </div>
       <div className="relative w-131.75 rounded-2xl flex flex-col p-12 outline-solid outline-[5px] outline-white bg-login-card shadow-login-card">
         <span
           className="pointer-events-none absolute inset-0 rounded-2xl p-px bg-login-border"
