@@ -10,6 +10,14 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
+function getPageWindow(page: number, totalPages: number): number[] {
+  const windowSize = Math.min(totalPages, 5);
+  let start = Math.max(1, page - 2);
+  const end = Math.min(totalPages, start + 4);
+  start = Math.max(1, end - 4);
+  return Array.from({ length: windowSize }, (_, i) => start + i);
+}
+
 export function Pagination({
   page,
   totalPages,
@@ -18,6 +26,8 @@ export function Pagination({
   total,
   onPageChange,
 }: PaginationProps) {
+  const pages = getPageWindow(page, totalPages);
+
   return (
     <div className="flex items-center justify-between mt-6">
       <span className="text-sm text-gray-500">
@@ -31,8 +41,7 @@ export function Pagination({
         >
           <IconChevronLeft />
         </button>
-        {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => i + 1).map(
-          (p) => (
+        {pages.map((p) => (
             <button
               key={p}
               onClick={() => onPageChange(p)}
