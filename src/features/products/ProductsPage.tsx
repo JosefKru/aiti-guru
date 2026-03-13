@@ -27,17 +27,19 @@ export function ProductsPage() {
     allChecked,
     toggleAll,
     toggleOne,
+    sort,
+    handleSortChange,
   } = useProductsPage();
 
   return (
     <div className="min-h-screen bg-white">
       {/* Top header */}
-      <div className="flex items-center px-7.5 py-5 border-x border-[#F3F3F3] border-20">
+      <div className="flex items-center px-7.5 py-5 border-x border-subtle border-20">
         <h1 className="flex-1 text-2xl font-semibold text-gray-900">Товары</h1>
-        <div className="flex items-center gap-2 h-12 w-255.75 px-5 bg-[#F3F3F3] rounded-lg">
+        <div className="flex items-center gap-2 h-12 w-255.75 px-5 bg-subtle rounded-lg">
           <IconSearch />
           <input
-            className="flex-1 text-sm placeholder:text-[#999999] outline-none"
+            className="flex-1 text-sm placeholder:text-text-muted outline-none"
             placeholder="Найти"
             value={searchInput}
             onChange={handleSearchChange}
@@ -56,10 +58,7 @@ export function ProductsPage() {
         {/* Progress bar */}
         {(isLoading || isFetching) && (
           <div className="fixed top-0 left-0 right-0 h-1 z-50 overflow-hidden">
-            <div
-              className="absolute inset-y-0 w-1/2 bg-primary"
-              style={{ animation: "progress-slide 1.2s ease-in-out infinite" }}
-            />
+            <div className="absolute inset-y-0 w-1/2 bg-primary animate-progress" />
           </div>
         )}
 
@@ -74,8 +73,10 @@ export function ProductsPage() {
           selectedIds={selectedIds}
           allChecked={allChecked}
           isFetching={isFetching}
+          sort={sort}
           onToggleAll={toggleAll}
           onToggleOne={toggleOne}
+          onSortChange={handleSortChange}
         />
 
         {data && (

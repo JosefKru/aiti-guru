@@ -1,8 +1,8 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { Toaster } from 'react-hot-toast'
-import { LoginPage } from '../features/auth/LoginPage'
-import { ProductsPage } from '../features/products/ProductsPage'
-import { ProtectedRoute } from './ProtectedRoute'
+import { Toaster } from "react-hot-toast";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { LoginPage } from "../features/auth/LoginPage";
+import { ProductsPage } from "../features/products/ProductsPage";
+import { ProtectedRoute } from "./ProtectedRoute";
 
 export default function App() {
   return (
@@ -21,5 +21,5 @@ export default function App() {
       </Routes>
       <Toaster position="top-center" />
     </BrowserRouter>
-  )
+  );
 }

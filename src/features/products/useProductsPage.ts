@@ -1,6 +1,7 @@
-import { useRef, useState } from "react";
-import { debounce } from "../../lib/debounce";
+import { useState } from "react";
 import type { Product } from "../../types";
+import { useProductsSearch } from "../../hooks/useProductsSearch";
+import { useProductsSort } from "../../hooks/useProductsSort";
 import { useProducts } from "./useProducts";
 
 const LIMIT = 20;
@@ -8,26 +9,18 @@ const LIMIT = 20;
 export function useProductsPage() {
   const [page, setPage] = useState(1);
   const [localProducts, setLocalProducts] = useState<Product[]>([]);
-  const [searchInput, setSearchInput] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
-  const debouncedSetSearch = useRef(
-    debounce((value: unknown) => {
-      setSearchQuery(value as string);
-      setPage(1);
-    }, 400),
-  ).current;
-
-  function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setSearchInput(e.target.value);
-    debouncedSetSearch(e.target.value);
-  }
+  const { searchInput, searchQuery, handleSearchChange } = useProductsSearch(() =>
+    setPage(1),
+  );
+  const { sort, handleSortChange } = useProductsSort(() => setPage(1));
 
   const { data, isLoading, isFetching, isError, refetch } = useProducts({
     page,
     limit: LIMIT,
     search: searchQuery || undefined,
+    sort,
   });
 
   const allIds = data?.products.map((p) => p.id) ?? [];
@@ -87,5 +80,7 @@ export function useProductsPage() {
     allChecked,
     toggleAll,
     toggleOne,
+    sort,
+    handleSortChange,
   };
 }

@@ -10,7 +10,14 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
-export function Pagination({ page, totalPages, from, to, total, onPageChange }: PaginationProps) {
+export function Pagination({
+  page,
+  totalPages,
+  from,
+  to,
+  total,
+  onPageChange,
+}: PaginationProps) {
   return (
     <div className="flex items-center justify-between mt-6">
       <span className="text-sm text-gray-500">
@@ -24,20 +31,22 @@ export function Pagination({ page, totalPages, from, to, total, onPageChange }: 
         >
           <IconChevronLeft />
         </button>
-        {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => i + 1).map((p) => (
-          <button
-            key={p}
-            onClick={() => onPageChange(p)}
-            className={clsx(
-              "w-8 h-8 flex items-center justify-center rounded text-sm font-medium transition-colors",
-              page === p
-                ? "[background:linear-gradient(to_bottom,rgba(255,255,255,0.15)_0%,rgba(255,255,255,0)_100%),#242EDB] [box-shadow:inset_0_0_0_1px_#367AFF] text-white"
-                : "text-gray-600 hover:bg-gray-100",
-            )}
-          >
-            {p}
-          </button>
-        ))}
+        {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => i + 1).map(
+          (p) => (
+            <button
+              key={p}
+              onClick={() => onPageChange(p)}
+              className={clsx(
+                "w-8 h-8 flex items-center justify-center rounded text-sm font-medium transition-colors",
+                page === p
+                  ? "bg-primary text-white"
+                  : "text-gray-600 hover:bg-gray-100",
+              )}
+            >
+              {p}
+            </button>
+          ),
+        )}
         <button
           onClick={() => onPageChange(Math.min(totalPages, page + 1))}
           disabled={page === totalPages}

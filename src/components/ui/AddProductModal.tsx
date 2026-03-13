@@ -1,7 +1,11 @@
+import { clsx } from "clsx";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import {
+  addProductSchema,
+  type AddProductFormValues,
+} from "../../features/products/schema";
 import { useModalAnimation } from "../../hooks/useModalAnimation";
-import { addProductSchema, type AddProductFormValues } from "../../features/products/schema";
 import type { Product } from "../../types";
 import { Button } from "./Button";
 import { Input } from "./Input";
@@ -10,7 +14,12 @@ type AddProductForm = AddProductFormValues;
 
 interface AddProductModalProps {
   onClose: () => void;
-  onAdd: (product: Omit<Product, "id" | "description" | "category" | "thumbnail" | "rating">) => void;
+  onAdd: (
+    product: Omit<
+      Product,
+      "id" | "description" | "category" | "thumbnail" | "rating"
+    >,
+  ) => void;
 }
 
 const EMPTY: AddProductForm = { title: "", price: "", brand: "", sku: "" };
@@ -39,36 +48,47 @@ export function AddProductModal({ onClose, onAdd }: AddProductModalProps) {
       setErrors(fieldErrors);
       return;
     }
-    onAdd({ title: result.data.title, price: Number(result.data.price), brand: result.data.brand, sku: result.data.sku });
+    onAdd({
+      title: result.data.title,
+      price: Number(result.data.price),
+      brand: result.data.brand,
+      sku: result.data.sku,
+    });
     close();
-    setTimeout(() => toast.success("Товар успешно добавлен"), 260);
+    setTimeout(() => toast.success("Товар успешно добавлен"), 250);
   }
 
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-40 flex items-center justify-center transition-all duration-250"
-      style={{
-        backgroundColor: visible ? "rgba(0,0,0,0.35)" : "rgba(0,0,0,0)",
-      }}
+      className={clsx(
+        "fixed inset-0 z-40 flex items-center justify-center transition-all duration-250",
+        visible ? "bg-black/35" : "bg-black/0",
+      )}
       onClick={(e) => e.target === overlayRef.current && close()}
     >
       <div
-        className="bg-white rounded-2xl shadow-xl w-120 p-8 transition-all duration-250"
-        style={{
-          opacity: visible ? 1 : 0,
-          transform: visible ? "scale(1)" : "scale(0.97)",
-        }}
+        className={clsx(
+          "bg-white rounded-2xl shadow-xl w-120 p-8 transition-all duration-250",
+          visible ? "opacity-100 scale-100" : "opacity-0 scale-97",
+        )}
       >
         <div className="flex items-center justify-between mb-7">
-          <h2 className="text-[20px] font-bold text-gray-900">Добавить товар</h2>
+          <h2 className="text-[20px] font-bold text-gray-900">
+            Добавить товар
+          </h2>
           <button
             type="button"
             onClick={close}
             className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
           >
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              <path
+                d="M1 1L13 13M13 1L1 13"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+              />
             </svg>
           </button>
         </div>

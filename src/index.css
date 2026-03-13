@@ -2,17 +2,29 @@
 
 @theme {
   --font-sans: "Inter", sans-serif;
+  --font-cairo: "Cairo", sans-serif;
 
   /* Brand */
-  --color-primary: #3d5afe;
+  --color-primary: #242edb;
   --color-primary-hover: #2a44e8;
+  --color-primary-shadow: #367aff;
+  --color-checkbox: #3c538e;
 
   /* Text */
   --color-text-title: #1a1a1a;
   --color-text-subtitle: #e0e0e0;
   --color-text-hint: #6c6c6c;
   --color-text-body: #232323;
-  --color-text-muted: #9c9c9c;
+  --color-text-muted: #999999;
+  --color-muted: #b2b3b9;
+
+  /* Borders & Backgrounds */
+  --color-light: #e2e2e2;
+  --color-line: #ececeb;
+  --color-subtle: #f3f3f3;
+
+  /* Status */
+  --color-danger: #f11010;
 }
 
 body {
@@ -29,6 +41,10 @@ body {
 
 @utility bg-login-border {
   background: linear-gradient(to bottom, #ededed 0%, transparent 90%);
+}
+
+@utility animate-progress {
+  animation: progress-slide 1.2s ease-in-out infinite;
 }
 
 @keyframes progress-slide {

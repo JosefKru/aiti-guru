@@ -1,13 +1,7 @@
 export function LogoIcon() {
   return (
     <div
-      className="relative shrink-0 rounded-full outline-solid outline-2 outline-white"
-      style={{
-        width: '52px',
-        height: '52px',
-        background: 'linear-gradient(to bottom, #e8e8e8 0%, #ffffff 100%)',
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.10)',
-      }}
+      className="relative shrink-0 rounded-full outline-solid outline-2 outline-white w-13 h-13 bg-gradient-to-b from-[#e8e8e8] to-white shadow-[0_4px_12px_rgba(0,0,0,0.10)]"
     >
       <span
         className="pointer-events-none absolute inset-0 rounded-full"

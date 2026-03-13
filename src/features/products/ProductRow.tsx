@@ -15,7 +15,7 @@ export function ProductRow({ product, selected, onToggle }: ProductRowProps) {
   const priceDec = (product.price % 1).toFixed(2).slice(1);
 
   return (
-    <tr className="border-t border-[#E2E2E2] hover:bg-gray-50 transition-colors h-17.75 text-[16px]">
+    <tr className="border-t border-light hover:bg-gray-50 transition-colors h-17.75 text-[16px]">
       <td className="pl-4.5">
         <div className="flex items-center gap-4.5">
           <TableCheckbox
@@ -29,27 +29,27 @@ export function ProductRow({ product, selected, onToggle }: ProductRowProps) {
               className="w-full h-full object-cover"
             />
           </div>
-          <div className="flex flex-col justify-center gap-1 w-[210px] mr-44.25">
+          <div className="flex flex-col justify-center gap-1 w-52.5 mr-44.25">
             <p className="font-bold leading-tight truncate">{product.title}</p>
-            <p className="text-[14px] text-[#B2B3B9]">{product.category}</p>
+            <p className="text-[14px] text-muted">{product.category}</p>
           </div>
         </div>
       </td>
       <td className="font-bold">{product.brand ?? "—"}</td>
       <td>{product.sku}</td>
       <td>
-        <span className={clsx(isLowRating ? "text-[#F11010]" : "text-black")}>
+        <span className={clsx(isLowRating ? "text-danger" : "text-black")}>
           {product.rating}
         </span>
         /5
       </td>
       <td>
         <span>{priceInt}</span>
-        <span className="text-[#999999]">{priceDec}</span>
+        <span className="text-text-muted">{priceDec}</span>
       </td>
       <td>
         <div className="flex items-center gap-8 justify-end pr-29.5">
-          <button className="w-13 h-6.75 rounded-full flex items-center justify-center text-white shrink-0 bg-[#242EDB] hover:opacity-90 transition-opacity">
+          <button className="w-13 h-6.75 rounded-full flex items-center justify-center text-white shrink-0 bg-primary hover:opacity-90 transition-opacity">
             <IconPlus />
           </button>
           <button className="w-7 h-7 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-600 border border-gray-200 transition-colors">

@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { getToken } from '../lib/token'
 
 interface AuthState {
   token: string | null
@@ -6,12 +7,8 @@ interface AuthState {
   logout: () => void
 }
 
-function getInitialToken(): string | null {
-  return localStorage.getItem('token') ?? sessionStorage.getItem('token')
-}
-
 export const useAuthStore = create<AuthState>()((set) => ({
-  token: getInitialToken(),
+  token: getToken(),
   setToken: (token, remember) => {
     if (remember) {
       localStorage.setItem('token', token)

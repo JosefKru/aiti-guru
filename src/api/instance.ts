@@ -1,11 +1,12 @@
 import axios from 'axios'
+import { getToken } from '../lib/token'
 
 const instance = axios.create({
   baseURL: 'https://dummyjson.com',
 })
 
 instance.interceptors.request.use((config) => {
-  const token = sessionStorage.getItem('token') ?? localStorage.getItem('token')
+  const token = getToken()
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }
